@@ -1,5 +1,5 @@
 {
-  "name": "iceicetimmy/acf-post-type-selector",
+  "name": "mvpdesign/acf-post-type-selector",
   "description": "Post type selector for Advanced Custom Fields.",
   "keywords": ["wordpress", "plugin", "advancedcustomfields", "acf", "custom-post-types"],
   "homepage": "https://github.com/iceicetimmy/acf-post-type-selector",
@@ -9,6 +9,11 @@
       "name": "Tim Perry",
       "email": "tim@applicious.co",
       "homepage": "http://applicious.co"
+    },
+    {
+        "name": "Brock Riemenschneider",
+        "email": "brock@mvpdesign.com",
+        "homepage": "https://github.com/BsWiM"
     }
   ],
   "type": "wordpress-plugin",
