@@ -16,11 +16,11 @@ class acf_field_post_type_selector_plugin
 	/*
 	*  Construct
 	*
-	*  @description: 
+	*  @description:
 	*  @since: 3.6
 	*  @created: 1/04/13
 	*/
-	
+
 	function __construct()
 	{
 		// set text domain
@@ -29,48 +29,61 @@ class acf_field_post_type_selector_plugin
 		$mofile = trailingslashit(dirname(__File__)) . 'lang/' . $domain . '-' . get_locale() . '.mo';
 		load_textdomain( $domain, $mofile );
 		*/
-		
-		
-		// version 4+
-		add_action('acf/register_fields', array($this, 'register_fields'));	
 
-		
+		// version 5+
+		add_action('acf/include_field_types', array($this, 'include_field_types'));
+
+		// version 4+
+		add_action('acf/register_fields', array($this, 'register_fields'));
+
+
 		// version 3-
 		add_action( 'init', array( $this, 'init' ));
 	}
-	
-	
+
+
 	/*
 	*  Init
 	*
-	*  @description: 
+	*  @description:
 	*  @since: 3.6
 	*  @created: 1/04/13
 	*/
-	
+
 	function init()
 	{
 		if(function_exists('register_field'))
-		{ 
+		{
 			register_field('acf_field_post_type_selector', dirname(__File__) . '/post-type-selector-v3.php');
 		}
 	}
-	
+
 	/*
 	*  register_fields
 	*
-	*  @description: 
+	*  @description:
 	*  @since: 3.6
 	*  @created: 1/04/13
 	*/
-	
+
 	function register_fields()
 	{
 		include_once('post-type-selector-v4.php');
 	}
-	
+
+	// 2. Include field type for ACF5
+	// $version = 5 and can be ignored until ACF6 exists
+
+	function include_field_types( $version )
+	{
+		include_once('post-type-selector-v5.php');
+	}
+
+
+
+
 }
 
 new acf_field_post_type_selector_plugin();
-		
+
 ?>
