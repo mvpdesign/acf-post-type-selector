@@ -8,10 +8,6 @@ class acf_field_post_type_selector extends acf_field {
     const SELECTOR_TYPE_RADIO = 1;
     const SELECTOR_TYPE_CHECKBOXES = 2;
 
-    // vars
-    var $settings, // will hold info such as dir / path
-        $defaults; // will hold default field options
-
     /*
     *  __construct
     *
@@ -54,6 +50,7 @@ class acf_field_post_type_selector extends acf_field {
         */
 
         $this->defaults = array(
+            'post_type'   => array(),
             'select_type' => 'Checkboxes',
         );
 
@@ -107,6 +104,20 @@ class acf_field_post_type_selector extends acf_field {
         *  Please note that you must also have a matching $defaults value for the field name (font_size)
         */
 
+        // default_value
+        acf_render_field_setting( $field, array(
+            'label'         => __('Filter by Post Type','acf-post_type_selector'),
+            'instructions'  => '',
+            'type'          => 'select',
+            'name'          => 'post_type',
+            'choices'       => acf_get_pretty_post_types(),
+            'multiple'      => 1,
+            'ui'            => 1,
+            'allow_null'    => 1,
+            'placeholder'   => __('All post types','acf-post_type_selector'),
+        ));
+
+        // default_value
         acf_render_field_setting( $field, array(
             'label'         => __('Selector Type','acf-post_type_selector'),
             'instructions'  => __('How would you like to select the post type?','acf-post_type_selector'),
@@ -147,6 +158,12 @@ class acf_field_post_type_selector extends acf_field {
         $post_types = get_post_types( array(
             'public' => true,
         ), 'objects' );
+        $post_types_filter = !empty($field['post_type']) ? acf_force_type_array( $field['post_type'] ) : acf_get_post_types();
+
+        // filter post types
+        $post_types = array_filter($post_types, function($post_type) use ($post_types_filter) {
+            return in_array($post_type->name, $post_types_filter);
+        });
 
         // create Field HTML
         $checked = array();
