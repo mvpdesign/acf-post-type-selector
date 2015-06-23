@@ -132,8 +132,39 @@ class acf_field_post_type_selector extends acf_field {
         ));
 
     }
+    
+    /*
+    *  acf_force_type_array
+    *
+    *  This function will force a variable to become an array
+    *
+    *  @type	function
+    *  @date	4/02/2014
+    *  @since	5.0.0
+    *
+    *  @param	$var (mixed)
+    *  @return	(array)
+    */
+    function acf_force_type_array( $var ) {
 
+        // is array?
+        if ( is_array($var) ) {
+        	return $var;
+        }
 
+        // bail early if empty
+        if( empty($var) && !is_numeric($var) ) {
+        	return array();
+        }
+
+        // string 
+        if( is_string($var) ) {
+        	return explode(',', $var);
+        }
+
+        // place in array
+        return array( $var );
+    }
 
     /*
     *  render_field()
@@ -158,7 +189,7 @@ class acf_field_post_type_selector extends acf_field {
         $post_types = get_post_types( array(
             'public' => true,
         ), 'objects' );
-        $post_types_filter = !empty($field['post_type']) ? acf_force_type_array( $field['post_type'] ) : acf_get_post_types();
+        $post_types_filter = !empty($field['post_type']) ? $this->acf_force_type_array( $field['post_type'] ) : acf_get_post_types();
 
         // filter post types
         $post_types = array_filter($post_types, function($post_type) use ($post_types_filter) {
